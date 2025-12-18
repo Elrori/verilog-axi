@@ -245,42 +245,43 @@ assign m_axi_bready = m_axi_bready_reg;
 
 integer i;
 
-always @* begin
-    state_next = STATE_IDLE;
+generate
+if (SEGMENT_COUNT == 1) begin
+    always @* begin
+        state_next = STATE_IDLE;
 
-    id_next = id_reg;
-    addr_next = addr_reg;
-    data_next = data_reg;
-    strb_next = strb_reg;
-    wuser_next = wuser_reg;
-    burst_next = burst_reg;
-    burst_size_next = burst_size_reg;
-    master_burst_next = master_burst_reg;
-    master_burst_size_next = master_burst_size_reg;
-    burst_active_next = burst_active_reg;
-    first_transfer_next = first_transfer_reg;
+        id_next = id_reg;
+        addr_next = addr_reg;
+        data_next = data_reg;
+        strb_next = strb_reg;
+        wuser_next = wuser_reg;
+        burst_next = burst_reg;
+        burst_size_next = burst_size_reg;
+        master_burst_next = master_burst_reg;
+        master_burst_size_next = master_burst_size_reg;
+        burst_active_next = burst_active_reg;
+        first_transfer_next = first_transfer_reg;
 
-    s_axi_awready_next = 1'b0;
-    s_axi_wready_next = 1'b0;
-    s_axi_bid_next = s_axi_bid_reg;
-    s_axi_bresp_next = s_axi_bresp_reg;
-    s_axi_buser_next = s_axi_buser_reg;
-    s_axi_bvalid_next = s_axi_bvalid_reg && !s_axi_bready;
-    m_axi_awid_next = m_axi_awid_reg;
-    m_axi_awaddr_next = m_axi_awaddr_reg;
-    m_axi_awlen_next = m_axi_awlen_reg;
-    m_axi_awsize_next = m_axi_awsize_reg;
-    m_axi_awburst_next = m_axi_awburst_reg;
-    m_axi_awlock_next = m_axi_awlock_reg;
-    m_axi_awcache_next = m_axi_awcache_reg;
-    m_axi_awprot_next = m_axi_awprot_reg;
-    m_axi_awqos_next = m_axi_awqos_reg;
-    m_axi_awregion_next = m_axi_awregion_reg;
-    m_axi_awuser_next = m_axi_awuser_reg;
-    m_axi_awvalid_next = m_axi_awvalid_reg && !m_axi_awready;
-    m_axi_bready_next = 1'b0;
+        s_axi_awready_next = 1'b0;
+        s_axi_wready_next = 1'b0;
+        s_axi_bid_next = s_axi_bid_reg;
+        s_axi_bresp_next = s_axi_bresp_reg;
+        s_axi_buser_next = s_axi_buser_reg;
+        s_axi_bvalid_next = s_axi_bvalid_reg && !s_axi_bready;
+        m_axi_awid_next = m_axi_awid_reg;
+        m_axi_awaddr_next = m_axi_awaddr_reg;
+        m_axi_awlen_next = m_axi_awlen_reg;
+        m_axi_awsize_next = m_axi_awsize_reg;
+        m_axi_awburst_next = m_axi_awburst_reg;
+        m_axi_awlock_next = m_axi_awlock_reg;
+        m_axi_awcache_next = m_axi_awcache_reg;
+        m_axi_awprot_next = m_axi_awprot_reg;
+        m_axi_awqos_next = m_axi_awqos_reg;
+        m_axi_awregion_next = m_axi_awregion_reg;
+        m_axi_awuser_next = m_axi_awuser_reg;
+        m_axi_awvalid_next = m_axi_awvalid_reg && !m_axi_awready;
+        m_axi_bready_next = 1'b0;
 
-    if (SEGMENT_COUNT == 1) begin
         // master output is same width; direct transfer with no splitting/merging
         m_axi_wdata_int = s_axi_wdata;
         m_axi_wstrb_int = s_axi_wstrb;
@@ -353,7 +354,44 @@ always @* begin
                 end
             end
         endcase
-    end else if (EXPAND) begin
+    end
+end else if (EXPAND) begin
+    always @* begin
+        state_next = STATE_IDLE;
+
+        id_next = id_reg;
+        addr_next = addr_reg;
+        data_next = data_reg;
+        strb_next = strb_reg;
+        wuser_next = wuser_reg;
+        burst_next = burst_reg;
+        burst_size_next = burst_size_reg;
+        master_burst_next = master_burst_reg;
+        master_burst_size_next = master_burst_size_reg;
+        burst_active_next = burst_active_reg;
+        first_transfer_next = first_transfer_reg;
+
+        s_axi_awready_next = 1'b0;
+        s_axi_wready_next = 1'b0;
+        s_axi_bid_next = s_axi_bid_reg;
+        s_axi_bresp_next = s_axi_bresp_reg;
+        s_axi_buser_next = s_axi_buser_reg;
+        s_axi_bvalid_next = s_axi_bvalid_reg && !s_axi_bready;
+        m_axi_awid_next = m_axi_awid_reg;
+        m_axi_awaddr_next = m_axi_awaddr_reg;
+        m_axi_awlen_next = m_axi_awlen_reg;
+        m_axi_awsize_next = m_axi_awsize_reg;
+        m_axi_awburst_next = m_axi_awburst_reg;
+        m_axi_awlock_next = m_axi_awlock_reg;
+        m_axi_awcache_next = m_axi_awcache_reg;
+        m_axi_awprot_next = m_axi_awprot_reg;
+        m_axi_awqos_next = m_axi_awqos_reg;
+        m_axi_awregion_next = m_axi_awregion_reg;
+        m_axi_awuser_next = m_axi_awuser_reg;
+        m_axi_awvalid_next = m_axi_awvalid_reg && !m_axi_awready;
+        m_axi_bready_next = 1'b0;
+
+
         // master output is wider; merge writes
         m_axi_wdata_int = {(M_WORD_WIDTH/S_WORD_WIDTH){s_axi_wdata}};
         m_axi_wstrb_int = s_axi_wstrb;
@@ -485,8 +523,45 @@ always @* begin
                 end
             end
         endcase
-    end else begin
-        // master output is narrower; split writes, and possibly split burst
+    end
+end else begin
+    always @* begin
+        state_next = STATE_IDLE;
+
+        id_next = id_reg;
+        addr_next = addr_reg;
+        data_next = data_reg;
+        strb_next = strb_reg;
+        wuser_next = wuser_reg;
+        burst_next = burst_reg;
+        burst_size_next = burst_size_reg;
+        master_burst_next = master_burst_reg;
+        master_burst_size_next = master_burst_size_reg;
+        burst_active_next = burst_active_reg;
+        first_transfer_next = first_transfer_reg;
+
+        s_axi_awready_next = 1'b0;
+        s_axi_wready_next = 1'b0;
+        s_axi_bid_next = s_axi_bid_reg;
+        s_axi_bresp_next = s_axi_bresp_reg;
+        s_axi_buser_next = s_axi_buser_reg;
+        s_axi_bvalid_next = s_axi_bvalid_reg && !s_axi_bready;
+        m_axi_awid_next = m_axi_awid_reg;
+        m_axi_awaddr_next = m_axi_awaddr_reg;
+        m_axi_awlen_next = m_axi_awlen_reg;
+        m_axi_awsize_next = m_axi_awsize_reg;
+        m_axi_awburst_next = m_axi_awburst_reg;
+        m_axi_awlock_next = m_axi_awlock_reg;
+        m_axi_awcache_next = m_axi_awcache_reg;
+        m_axi_awprot_next = m_axi_awprot_reg;
+        m_axi_awqos_next = m_axi_awqos_reg;
+        m_axi_awregion_next = m_axi_awregion_reg;
+        m_axi_awuser_next = m_axi_awuser_reg;
+        m_axi_awvalid_next = m_axi_awvalid_reg && !m_axi_awready;
+        m_axi_bready_next = 1'b0;
+
+
+            // master output is narrower; split writes, and possibly split burst
         m_axi_wdata_int = data_reg;
         m_axi_wstrb_int = strb_reg;
         m_axi_wlast_int = 1'b0;
@@ -638,6 +713,7 @@ always @* begin
         endcase
     end
 end
+endgenerate
 
 always @(posedge clk) begin
     state_reg <= state_next;

@@ -220,35 +220,37 @@ assign m_axi_aruser = ARUSER_ENABLE ? m_axi_aruser_reg : {ARUSER_WIDTH{1'b0}};
 assign m_axi_arvalid = m_axi_arvalid_reg;
 assign m_axi_rready = m_axi_rready_reg;
 
-always @* begin
-    state_next = STATE_IDLE;
+generate
+    
+if (SEGMENT_COUNT == 1) begin
+    always @* begin
+        state_next = STATE_IDLE;
 
-    id_next = id_reg;
-    addr_next = addr_reg;
-    data_next = data_reg;
-    resp_next = resp_reg;
-    ruser_next = ruser_reg;
-    burst_next = burst_reg;
-    burst_size_next = burst_size_reg;
-    master_burst_next = master_burst_reg;
-    master_burst_size_next = master_burst_size_reg;
+        id_next = id_reg;
+        addr_next = addr_reg;
+        data_next = data_reg;
+        resp_next = resp_reg;
+        ruser_next = ruser_reg;
+        burst_next = burst_reg;
+        burst_size_next = burst_size_reg;
+        master_burst_next = master_burst_reg;
+        master_burst_size_next = master_burst_size_reg;
 
-    s_axi_arready_next = 1'b0;
-    m_axi_arid_next = m_axi_arid_reg;
-    m_axi_araddr_next = m_axi_araddr_reg;
-    m_axi_arlen_next = m_axi_arlen_reg;
-    m_axi_arsize_next = m_axi_arsize_reg;
-    m_axi_arburst_next = m_axi_arburst_reg;
-    m_axi_arlock_next = m_axi_arlock_reg;
-    m_axi_arcache_next = m_axi_arcache_reg;
-    m_axi_arprot_next = m_axi_arprot_reg;
-    m_axi_arqos_next = m_axi_arqos_reg;
-    m_axi_arregion_next = m_axi_arregion_reg;
-    m_axi_aruser_next = m_axi_aruser_reg;
-    m_axi_arvalid_next = m_axi_arvalid_reg && !m_axi_arready;
-    m_axi_rready_next = 1'b0;
+        s_axi_arready_next = 1'b0;
+        m_axi_arid_next = m_axi_arid_reg;
+        m_axi_araddr_next = m_axi_araddr_reg;
+        m_axi_arlen_next = m_axi_arlen_reg;
+        m_axi_arsize_next = m_axi_arsize_reg;
+        m_axi_arburst_next = m_axi_arburst_reg;
+        m_axi_arlock_next = m_axi_arlock_reg;
+        m_axi_arcache_next = m_axi_arcache_reg;
+        m_axi_arprot_next = m_axi_arprot_reg;
+        m_axi_arqos_next = m_axi_arqos_reg;
+        m_axi_arregion_next = m_axi_arregion_reg;
+        m_axi_aruser_next = m_axi_aruser_reg;
+        m_axi_arvalid_next = m_axi_arvalid_reg && !m_axi_arready;
+        m_axi_rready_next = 1'b0;
 
-    if (SEGMENT_COUNT == 1) begin
         // master output is same width; direct transfer with no splitting/merging
         s_axi_rid_int = id_reg;
         s_axi_rdata_int = m_axi_rdata;
@@ -307,7 +309,36 @@ always @* begin
                 end
             end
         endcase
-    end else if (EXPAND) begin
+    end
+end else if (EXPAND) begin
+    always @* begin
+        state_next = STATE_IDLE;
+
+        id_next = id_reg;
+        addr_next = addr_reg;
+        data_next = data_reg;
+        resp_next = resp_reg;
+        ruser_next = ruser_reg;
+        burst_next = burst_reg;
+        burst_size_next = burst_size_reg;
+        master_burst_next = master_burst_reg;
+        master_burst_size_next = master_burst_size_reg;
+
+        s_axi_arready_next = 1'b0;
+        m_axi_arid_next = m_axi_arid_reg;
+        m_axi_araddr_next = m_axi_araddr_reg;
+        m_axi_arlen_next = m_axi_arlen_reg;
+        m_axi_arsize_next = m_axi_arsize_reg;
+        m_axi_arburst_next = m_axi_arburst_reg;
+        m_axi_arlock_next = m_axi_arlock_reg;
+        m_axi_arcache_next = m_axi_arcache_reg;
+        m_axi_arprot_next = m_axi_arprot_reg;
+        m_axi_arqos_next = m_axi_arqos_reg;
+        m_axi_arregion_next = m_axi_arregion_reg;
+        m_axi_aruser_next = m_axi_aruser_reg;
+        m_axi_arvalid_next = m_axi_arvalid_reg && !m_axi_arready;
+        m_axi_rready_next = 1'b0;
+
         // master output is wider; split reads
         s_axi_rid_int = id_reg;
         s_axi_rdata_int = m_axi_rdata;
@@ -439,7 +470,37 @@ always @* begin
                 end
             end
         endcase
-    end else begin
+    end
+end else begin
+    always @* begin
+        state_next = STATE_IDLE;
+
+        id_next = id_reg;
+        addr_next = addr_reg;
+        data_next = data_reg;
+        resp_next = resp_reg;
+        ruser_next = ruser_reg;
+        burst_next = burst_reg;
+        burst_size_next = burst_size_reg;
+        master_burst_next = master_burst_reg;
+        master_burst_size_next = master_burst_size_reg;
+
+        s_axi_arready_next = 1'b0;
+        m_axi_arid_next = m_axi_arid_reg;
+        m_axi_araddr_next = m_axi_araddr_reg;
+        m_axi_arlen_next = m_axi_arlen_reg;
+        m_axi_arsize_next = m_axi_arsize_reg;
+        m_axi_arburst_next = m_axi_arburst_reg;
+        m_axi_arlock_next = m_axi_arlock_reg;
+        m_axi_arcache_next = m_axi_arcache_reg;
+        m_axi_arprot_next = m_axi_arprot_reg;
+        m_axi_arqos_next = m_axi_arqos_reg;
+        m_axi_arregion_next = m_axi_arregion_reg;
+        m_axi_aruser_next = m_axi_aruser_reg;
+        m_axi_arvalid_next = m_axi_arvalid_reg && !m_axi_arready;
+        m_axi_rready_next = 1'b0;
+
+
         // master output is narrower; merge reads and possibly split burst
         s_axi_rid_int = id_reg;
         s_axi_rdata_int = data_reg;
@@ -548,6 +609,7 @@ always @* begin
         endcase
     end
 end
+endgenerate
 
 always @(posedge clk) begin
     state_reg <= state_next;
